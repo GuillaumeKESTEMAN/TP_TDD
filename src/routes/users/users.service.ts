@@ -1,3 +1,4 @@
+import { hash } from "bcrypt";
 import { UsersRepository } from "./users.repository";
 
 export class UsersService {
@@ -5,7 +6,8 @@ export class UsersService {
         private readonly usersRepository: UsersRepository,
     ) { }
 
-    register(username: string, password: string) {
-        this.usersRepository.addUser(username, password);
+    async register(username: string, password: string) {
+        const hashedPassword = await hash(password, 10);
+        this.usersRepository.addUser(username, hashedPassword);
     }
 }

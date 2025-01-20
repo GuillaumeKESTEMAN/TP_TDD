@@ -1,12 +1,12 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/entities/user.entity';
+import { User } from '../../entities/user.entity';
 import { AuthService } from '../auth.service';
 
 describe('AuthService', () => {
-  let authService: AuthService;
   let userRepository;
   let jwtService: JwtService;
+  let authService: AuthService;
 
   beforeEach(async () => {
     userRepository = {
@@ -21,13 +21,16 @@ describe('AuthService', () => {
         ),
     };
 
-    authService = new AuthService(userRepository);
-    jwtService = new JwtService();
+    jwtService = new JwtService({ secret: 'secret' });
+    authService = new AuthService(userRepository, jwtService);
   });
 
   it('should return a JWT token', async () => {
     const username = 'john';
-    const jwtToken = authService.signIn(username, 'my_super_secure_passw0rd');
+    const { access_token: jwtToken } = await authService.signIn(
+      username,
+      'my_super_secure_passw0rd',
+    );
 
     expect(userRepository.getUser).toHaveBeenCalledWith(username);
 
@@ -38,9 +41,8 @@ describe('AuthService', () => {
   });
 
   it('should return throw an UnauthorizedException', async () => {
-    const username = 'john';
-    expect(authService.signIn(username, 'my_super_insecure_passw0rd')).toThrow(
-      UnauthorizedException,
-    );
+    await expect(
+      authService.signIn('john', 'my_super_insecure_passw0rd'),
+    ).rejects.toThrow(UnauthorizedException);
   });
 });

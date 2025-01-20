@@ -14,4 +14,8 @@ export class UsersRepository {
     const user = new User(username, password);
     this.usersRepository.save(user);
   }
+
+  async getUser(username: string): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { username: username } });
+  }
 }

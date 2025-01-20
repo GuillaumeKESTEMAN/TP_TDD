@@ -1,4 +1,5 @@
 import { compare } from 'bcrypt';
+import type { AuthService } from '../../../auth/auth.service';
 import { UsersService } from '../users.service';
 
 describe('UsersService', () => {
@@ -6,16 +7,24 @@ describe('UsersService', () => {
   let userRepository;
 
   beforeEach(async () => {
+    const authService = {
+      signIn: jest.fn().mockReturnValue({ access_token: 'VALID_JWT_TOKEN' }),
+    };
     userRepository = {
       addUser: jest.fn(),
     };
 
-    usersService = new UsersService(userRepository);
+    usersService = new UsersService(
+      userRepository,
+      authService as unknown as AuthService,
+    );
   });
 
   it('should register user with the register repository', async () => {
     const password = 'testPassword';
-    await usersService.register('testUser', password);
+    expect(await usersService.register('testUser', password)).toEqual({
+      access_token: 'VALID_JWT_TOKEN',
+    });
 
     expect(userRepository.addUser).toHaveBeenCalledWith(
       'testUser',

@@ -1,5 +1,5 @@
 import { compare } from 'bcrypt';
-import type { AuthService } from '../../../auth/auth.service';
+import type { AuthService } from 'src/auth/auth.service';
 import { UsersService } from '../users.service';
 
 describe('UsersService', () => {

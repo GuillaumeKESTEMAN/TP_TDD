@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../../entities/user.entity';
+import { User } from 'src/entities/user.entity';
 import { AuthService } from '../auth.service';
 
 describe('AuthService', () => {

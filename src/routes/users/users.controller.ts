@@ -6,9 +6,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('register')
-  register(
+  async register(
     @Body() { username, password }: { username: string; password: string },
-  ): void {
-    this.usersService.register(username, password);
+  ): Promise<{ access_token: string }> {
+    return await this.usersService.register(username, password);
   }
 }

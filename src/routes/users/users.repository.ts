@@ -10,8 +10,12 @@ export class UsersRepository {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  addUser(username: string, password: string): void {
+  async addUser(username: string, password: string): Promise<void> {
     const user = new User(username, password);
-    this.usersRepository.save(user);
+    await this.usersRepository.save(user);
+  }
+
+  async getUser(username: string): Promise<User | null> {
+    return this.usersRepository.findOne({ where: { username: username } });
   }
 }

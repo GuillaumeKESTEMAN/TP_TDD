@@ -19,4 +19,16 @@ export class UsersService {
     await this.usersRepository.addUser(username, hashedPassword);
     return this.authService.signIn(username, password);
   }
+
+  async login(
+    username: string,
+    password: string,
+  ): Promise<{ access_token: string } | string> {
+    try {
+      return await this.authService.signIn(username, password);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (exception) {
+      return 'Access denied';
+    }
+  }
 }

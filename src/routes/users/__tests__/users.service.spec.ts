@@ -62,8 +62,8 @@ describe('UsersService', () => {
       authService as unknown as AuthService,
     );
 
-    expect(await usersService.login('testUser', 'wrongPassword')).toEqual(
-      'Access denied',
-    );
+    await expect(
+      usersService.login('testUser', 'wrongPassword'),
+    ).rejects.toThrow(new UnauthorizedException('Access denied'));
   });
 });

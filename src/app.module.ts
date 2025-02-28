@@ -12,7 +12,7 @@ import { UsersModule } from './routes/users/users.module';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db.sqlite',
+      database: process.env.DB_FILE ?? 'db.sqlite',
       entities: [User],
       synchronize: true,
     }),

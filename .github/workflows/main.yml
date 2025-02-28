@@ -20,6 +20,7 @@ jobs:
           node-version: "*" # Use the LTS Node.js version
           cache: "npm"
           cache-dependency-path: './package-lock.json'
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npm run build
       - run: npm run test
+      - run: npm run test:cucumber

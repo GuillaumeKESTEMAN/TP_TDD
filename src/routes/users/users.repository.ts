@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
+import { User } from '../../entities/user.entity';
+
+export class RegisterException extends Error {}
 
 @Injectable()
 export class UsersRepository {
@@ -12,7 +14,12 @@ export class UsersRepository {
 
   async addUser(username: string, password: string): Promise<void> {
     const user = new User(username, password);
-    await this.usersRepository.save(user);
+    try {
+      await this.usersRepository.save(user);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      throw new RegisterException('Failed to register user');
+    }
   }
 
   async getUser(username: string): Promise<User | null> {

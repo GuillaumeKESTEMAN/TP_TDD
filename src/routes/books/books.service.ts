@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import type { Book } from 'src/entities/book.entity';
+import type { Book } from '../../entities/book.entity';
 import { BooksRepository } from './books.repository';
 import type { NewBookInput } from './dto/new-book.input';
 import { BookModel } from './models/book.model';

@@ -3,6 +3,7 @@ import type { Book } from '../../entities/book.entity';
 import { BooksRepository } from './books.repository';
 import type { NewBookInput } from './dto/new-book.input';
 import { BookModel } from './models/book.model';
+import { BooksArgs } from './dto/books.args';
 
 @Injectable()
 export class BooksService {
@@ -12,6 +13,13 @@ export class BooksService {
     const bookModel = new BookModel();
     bookModel.id = book.id;
     bookModel.isbn = book.isbn;
+    bookModel.title = book.title;
+    bookModel.author = book.author;
+    bookModel.publisher = book.publisher;
+    bookModel.publishedDate = book.publishedDate;
+    bookModel.description = book.description;
+    bookModel.genres = book.genres;
+    bookModel.pageCount = book.pageCount;
     return bookModel;
   }
 
@@ -24,9 +32,11 @@ export class BooksService {
   //   return {} as any;
   // }
 
-  // async findAll(booksArgs: BooksArgs): Promise<Book[]> {
-  //   return [] as Book[];
-  // }
+  async findAll(booksArgs: BooksArgs): Promise<BookModel[]> {
+    const books = await this.booksRepository.getBooks(booksArgs);
+    console.log(books);
+    return books.map(this.toBookModel);
+  }
 
   // async remove(id: string): Promise<boolean> {
   //   return true;

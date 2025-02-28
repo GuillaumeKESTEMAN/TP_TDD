@@ -3,6 +3,7 @@ import { PubSub } from 'graphql-subscriptions';
 import { BooksService } from './books.service';
 import { NewBookInput } from './dto/new-book.input';
 import { BookModel } from './models/book.model';
+import { BooksArgs } from './dto/books.args';
 
 const pubSub = new PubSub();
 
@@ -10,7 +11,7 @@ const pubSub = new PubSub();
 export class BooksResolver {
   constructor(private readonly booksService: BooksService) {}
 
-  @Query(() => BookModel)
+  //@Query(() => BookModel)
   // async book(@Args('id') id: string): Promise<Book> {
   //   const book = await this.booksService.findOneById(id);
   //   if (!book) {
@@ -19,10 +20,11 @@ export class BooksResolver {
   //   return book;
   // }
 
-  // @Query((returns) => [Book])
-  // books(@Args() booksArgs: BooksArgs): Promise<Book[]> {
-  //   return this.booksService.findAll(booksArgs);
-  // }
+   @Query((returns) => [BookModel])
+   books(@Args() booksArgs: BooksArgs): Promise<BookModel[]> {
+     return this.booksService.findAll(booksArgs);
+  }
+
   @Mutation(() => BookModel)
   async addBook(
     @Args('newBookData') newBookData: NewBookInput,

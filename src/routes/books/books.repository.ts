@@ -3,13 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from 'src/entities/book.entity';
 import { Repository } from 'typeorm';
 import type { NewBookInput } from './dto/new-book.input';
+import { BooksArgs } from './dto/books.args';
 
 @Injectable()
 export class BooksRepository {
   constructor(
     @InjectRepository(Book)
     private readonly booksRepository: Repository<Book>,
-  ) {}
+  ) { }
 
   async addBook({
     isbn,
@@ -33,4 +34,11 @@ export class BooksRepository {
     );
     return await this.booksRepository.save(newBook);
   }
+
+  async getBooks({
+    limit
+  }: BooksArgs): Promise<Book[]> {
+    return await this.booksRepository.find({ take: limit });
+  }
+
 }
